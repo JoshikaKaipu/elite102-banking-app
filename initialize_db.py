@@ -1,39 +1,45 @@
 import sqlite3
 
-DB_NAME = 'example.db'
-
+# This will create a file named 'bank.db' in your folder
+DB_NAME = 'bank.db'
 
 def initialize_database():
+    # 1. Connect (this creates the file if it doesn't exist)
     connection = sqlite3.connect(DB_NAME)
-    print("Connected to the database.")
     cursor = connection.cursor()
-    print("Cursor created.")
-    # Create a sample table
-    print("Creating table if it does not exist...")
+    
+    print("Creating banking tables...")
+
+    # 2. Create the Users table
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS students
-            (id integer primary key, 
-            name text, 
-            age integer, 
-            grade text, 
-            gpa real)
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL
+        )
     ''')
 
-    print("Table created.")
-
-    # Insert sample data
-    print("Inserting sample data...")
+    # 3. Create the Accounts table
     cursor.execute('''
-        INSERT INTO students (name, age,grade, gpa) VALUES
-        ('Alice', 16, '10th', 3.5),
-        ('Bob', 17, '11th', 3.8),
-        ('Charlie', 15, '9th', 3.2)
+        CREATE TABLE IF NOT EXISTS accounts (
+            account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            account_type TEXT,
+            balance REAL DEFAULT 0.0,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        )
     ''')
-    print("Sample data inserted.")
-    # Commit the changes and close the connection
-    print("Committing changes and closing the connection...")
+
+    # 4. Insert a test user so the app isn't empty
+    cursor.execute('''
+        INSERT OR IGNORE INTO users (first_name, last_name, email) 
+        VALUES ('John', 'Doe', 'john@example.com')
+    ''')
+
     connection.commit()
     connection.close()
+    print("Database initialized successfully!")
 
-
-initialize_database()
+if __name__ == "__main__":
+    initialize_database()

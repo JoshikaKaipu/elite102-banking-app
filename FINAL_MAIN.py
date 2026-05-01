@@ -4,6 +4,7 @@ import questions as q
 
 move = True
 while move == True:
+    print()
     print("Hello! Welcome to the Bank!")
     print()
     print("Choose one of the options below!")
@@ -14,7 +15,7 @@ while move == True:
     print("4. Withdraw Money")
     print("5. Questions")
     print("6. Exit")
-
+    print()
     userChoice = int(input("Enter your choice: "))
 
     if userChoice == 1:
@@ -44,6 +45,7 @@ while move == True:
         password = input("What is your password? ")
         accountFound = ba.login(username, password)
         if accountFound == True:
+            print()
             print("Login Successful!")
             ba.checkBalance(username)
         else:
@@ -54,21 +56,27 @@ while move == True:
         password = input("What is your password? ")
         accountFound = ba.login(username, password)
         if accountFound == True:
+            print()
             print("Login Successful!")
+            print()
             amount = round(float(input("How much would you like to deposit? ")),2)
+            print()
             ba.deposit(username, amount)
         else:
             print("Login Failed. Please try again.")
+            print()
 
     elif userChoice == 4:
         username = input("What is your name? ")
         password = input("What is your password? ")
         accountFound = ba.login(username, password)
         if accountFound == True:
+            print()
             print("Login Successful!")
             amount = round(float(input("How much would you like to withdraw? ")),2)
             ba.withdraw(username, amount)
         else:
+            print()
             print("Login Failed. Please try again.")
 
     elif userChoice == 5:
@@ -79,8 +87,5 @@ while move == True:
 
     else:
         print("Sorry, please enter a valid number!")
-
-
-        #print("Sorry, please try again!")
 
 

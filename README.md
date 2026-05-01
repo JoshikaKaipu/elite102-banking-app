@@ -1,3 +1,4 @@
+Project Description:
 This banking app is designed to help with user transactions including deposits, withdrawals, checking balance, and creating an account. The app stores the username and the password associated with it. Once the user enters a username, the database checks if it exists and then prompts the user for a password. If the password is correct, the user is able to perform the task they wish to complete, else, the user is prompted to renenter the passoword or create an account. In the create an account functionality, the user has the option to recieve a strong password that is randomly generated.
 
 Setup Instructions:

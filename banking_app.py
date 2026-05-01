@@ -33,11 +33,13 @@ def checkBalance(account_name):
 
     if row:
         print(f"Balance for {account_name}: ${row[0]}")
+        conn.close()
+        return row[0]
     else:
         print(f"Account for '{account_name}' not found.")
-
+        conn.close()
+        return 0
     
-    conn.close()
 
 
 def deposit(account_name, amount):
@@ -62,6 +64,7 @@ def deposit(account_name, amount):
     conn.close()
 
     print(f"Successfully deposited ${amount} for {account_name}.")
+    print()
     checkBalance(account_name)
 
 
@@ -76,19 +79,20 @@ def withdraw(account_name, amount):
         print(f"Error: No account found for '{account_name}'. Please create an account first.")
         conn.close()
         return ""
-
-    cursor.execute("""
-        UPDATE accounts 
-        SET balance = balance - ? 
-        WHERE name = ?
-    """, (amount, account_name))
-
+    
+    if (checkBalance(account_name) >= amount):
+        cursor.execute("""
+            UPDATE accounts 
+            SET balance = balance - ? 
+            WHERE name = ?
+        """, (amount, account_name))
+        print(f"Successfully withdrew ${amount} for {account_name}.")
+        checkBalance(account_name)
+        
+    else:
+        print("You cannot withdraw more than that.")
     conn.commit()
     conn.close()
-
-    print(f"Successfully deposited ${amount} for {account_name}.")
-    checkBalance(account_name)
-
 def login(account_name, password):
     conn = sqlite3.connect('bank.db')
     cursor = conn.cursor()
